@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+	<mirrors>
+		<mirror>
+			<id>central-mirror</id>
+			<mirrorOf>external:*</mirrorOf>
+			<name>Artifactory Central Mirror</name>
+			<url>http://repo.maven.apache.org/maven2</url>
+		</mirror>
+	</mirrors>
+	
+	<proxies>
+		<proxy>
+			<id>hsdg-proxy</id>
+			<active>true</active>
+			<host>proxyase.ham.hamburgsud.com</host>
+			<port>8081</port>
+			<nonProxyHosts>*.hsdg-ad.int</nonProxyHosts>
+		</proxy>
+	</proxies>
+
+	<profiles>
+		<profile>
+			<id>jpolom</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<repositories>
+				<repository>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+					<id>releases</id>
+					<name>Main Releases Repository</name>
+					<url>http://repo.maven.apache.org/maven2</url>
+				</repository>
+			</repositories>
+		</profile>
+	</profiles>
+
+</settings>
