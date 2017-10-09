@@ -2,13 +2,25 @@ package com.polomos.converter;
 
 import java.util.ArrayList;
 
+import com.google.common.base.MoreObjects;
+
 public class Sentence {
 	private ArrayList<String> words = new ArrayList<>();
 	private int sentenceNo = 1;
 
-	public boolean addWord(final String word) {
-		words.add(word);
-		return true;
+	/**
+	 * Add {@code word} to sentence. Before adding it special characters are
+	 * removed. Word is added only in case it has length > 0
+	 * 
+	 * @param word
+	 * @return
+	 */
+	public String addWord(final String word) {
+		final String finalWord = WordUtil.removeSpecialCharacters(word);
+		if (finalWord.length() > 0) {
+			words.add(finalWord);
+		}
+		return finalWord;
 	}
 
 	/**
@@ -32,8 +44,9 @@ public class Sentence {
 	/**
 	 * Removes all words from sentence
 	 */
-	public void clear() {
+	public void startNew() {
 		words.clear();
+		sentenceNo++;
 	}
 
 	/**
@@ -41,5 +54,10 @@ public class Sentence {
 	 */
 	public int getSentenceNo() {
 		return sentenceNo;
+	}
+
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this).add("sentenceNo", sentenceNo).add("words", words).toString();
 	}
 }

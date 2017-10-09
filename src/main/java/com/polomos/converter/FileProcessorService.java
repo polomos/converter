@@ -39,7 +39,6 @@ public final class FileProcessorService {
 				while (it.hasNext()) {
 					String line = it.nextLine();
 					sp.processLine(line);
-					log.debug(line);
 				}
 			} catch (IOException e) {
 				log.error(e.getMessage());
