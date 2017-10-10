@@ -3,6 +3,7 @@ package com.polomos.converter;
 import java.util.ArrayList;
 
 import com.google.common.base.MoreObjects;
+import com.polomos.io.WordUtil;
 
 public class Sentence {
 	private ArrayList<String> words = new ArrayList<>();
@@ -29,6 +30,15 @@ public class Sentence {
 	 * @return
 	 */
 	public String toCsv() {
+		return words.toString();
+	}
+
+	/**
+	 * Convert current sentence to XML
+	 * 
+	 * @return
+	 */
+	public String toXml() {
 		return words.toString();
 	}
 

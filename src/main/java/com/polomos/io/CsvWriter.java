@@ -1,4 +1,6 @@
-package com.polomos.converter;
+package com.polomos.io;
+
+import com.polomos.converter.Sentence;
 
 public class CsvWriter extends BufferedFileWriter {
 
@@ -6,6 +8,11 @@ public class CsvWriter extends BufferedFileWriter {
 
 	public CsvWriter(final String filePath) {
 		super(filePath + CSV_SUFFIX);
+	}
+
+	@Override
+	protected String getFormatedSentence(Sentence toWrite) {
+		return toWrite.toCsv();
 	}
 
 }

@@ -1,10 +1,12 @@
-package com.polomos.converter;
+package com.polomos.io;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class BufferedFileWriter {
+import com.polomos.converter.Sentence;
+
+public abstract class BufferedFileWriter {
 
 	BufferedWriter bw = null;
 	FileWriter fw = null;
@@ -19,14 +21,15 @@ public class BufferedFileWriter {
 		bw = new BufferedWriter(fw);
 	}
 
-	protected void write(final Sentence toWrite) {
-
+	public void write(final Sentence toWrite) {
 		try {
-			bw.write(toWrite.toCsv());
+			bw.write(getFormatedSentence(toWrite));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+
+	protected abstract String getFormatedSentence(Sentence toWrite);
 
 	public void close() {
 		try {

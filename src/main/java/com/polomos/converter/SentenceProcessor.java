@@ -7,16 +7,21 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
+import com.polomos.io.CsvWriter;
+import com.polomos.io.WordUtil;
+import com.polomos.io.XmlWriter;
 
 public class SentenceProcessor {
 
 	private static final Logger log = LoggerFactory.getLogger(SentenceProcessor.class);
 	private static final Splitter SPLITTER = Splitter.on(CharMatcher.WHITESPACE).trimResults().omitEmptyStrings();
 	private CsvWriter csvWriter;
+	private XmlWriter xmlWriter;
 	private Sentence sentence = new Sentence();
 
 	public SentenceProcessor(final String fileName) {
 		csvWriter = new CsvWriter(fileName);
+		xmlWriter = new XmlWriter(fileName);
 	}
 
 	public void processLine(final String line) throws IOException {
@@ -27,7 +32,7 @@ public class SentenceProcessor {
 				sentence.addWord(word.substring(0, word.length() - 1));
 				log.debug(sentence.toString());
 				if (sentence.isNotEmpty()) {
-					csvWriter.write(sentence);
+					putSentenceToFiles();
 					sentence.startNew();
 				}
 			} else {
@@ -36,10 +41,16 @@ public class SentenceProcessor {
 		}
 	}
 
+	private void putSentenceToFiles() {
+		csvWriter.write(sentence);
+		xmlWriter.write(sentence);
+	}
+
 	/**
 	 * Close all open files.
 	 */
 	public void close() {
 		csvWriter.close();
+		xmlWriter.close();
 	}
 }
