@@ -1,5 +1,7 @@
 package com.polomos.converter;
 
+import static org.apache.commons.io.FilenameUtils.getBaseName;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -31,8 +33,8 @@ public final class FileProcessorService {
 	public void process() {
 
 		if (FileValidator.isValid(filePath)) {
-			final SentenceProcessor sp = new SentenceProcessor();
 			final File inputFile = new File(filePath);
+			final SentenceProcessor sp = new SentenceProcessor(getBaseName(inputFile.getName()));
 			LineIterator it = null;
 			try {
 				it = FileUtils.lineIterator(inputFile, "UTF-8");
