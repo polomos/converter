@@ -1,5 +1,7 @@
 package com.polomos.converter;
 
+import static com.polomos.io.WordUtil.isEndOfSentence;
+
 import java.io.IOException;
 
 import org.slf4j.Logger;
@@ -8,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
 import com.polomos.io.CsvWriter;
-import com.polomos.io.WordUtil;
 import com.polomos.io.XmlWriter;
 
 public class SentenceProcessor {
@@ -28,9 +29,8 @@ public class SentenceProcessor {
 		final Iterable<String> splitedLine = SPLITTER.split(line);
 
 		for (String word : splitedLine) {
-			if (WordUtil.isEndOfSentence(word)) {
+			if (isEndOfSentence(word)) {
 				sentence.addWord(word.substring(0, word.length() - 1));
-				log.debug(sentence.toString());
 				if (sentence.isNotEmpty()) {
 					putSentenceToFiles();
 					sentence.startNew();
@@ -42,6 +42,8 @@ public class SentenceProcessor {
 	}
 
 	private void putSentenceToFiles() {
+		sentence.sortSentence();
+		log.debug("Sorted {}", sentence);
 		csvWriter.write(sentence);
 		xmlWriter.write(sentence);
 	}

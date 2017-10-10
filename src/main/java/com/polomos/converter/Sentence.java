@@ -1,8 +1,11 @@
 package com.polomos.converter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.Ordering;
 import com.polomos.io.WordUtil;
 
 public class Sentence {
@@ -30,7 +33,7 @@ public class Sentence {
 	 * @return
 	 */
 	public String toCsv() {
-		return words.toString();
+		return Joiner.on(",").join(words);
 	}
 
 	/**
@@ -69,5 +72,9 @@ public class Sentence {
 	@Override
 	public String toString() {
 		return MoreObjects.toStringHelper(this).add("sentenceNo", sentenceNo).add("words", words).toString();
+	}
+
+	public void sortSentence() {
+		Collections.sort(words, Ordering.from(String.CASE_INSENSITIVE_ORDER));
 	}
 }
