@@ -13,7 +13,7 @@ public final class WordUtil {
 
 	private static final Pattern END_OF_SENTENCE = Pattern.compile(".*[.!?]$");
 
-	private static final Pattern SPECIAL_CHARACTER = Pattern.compile("[^a-zA-Z0-9'-]");
+	private static final Pattern SPECIAL_CHARACTER = Pattern.compile("[^a-zA-Z0-9']");
 
 	public static boolean isEndOfSentence(final String word) {
 

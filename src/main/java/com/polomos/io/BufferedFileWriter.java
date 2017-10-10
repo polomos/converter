@@ -21,9 +21,13 @@ public abstract class BufferedFileWriter {
 		bw = new BufferedWriter(fw);
 	}
 
-	public void write(final Sentence toWrite) {
+	public void writeSentence(final Sentence toWrite) {
+		write(getFormatedSentence(toWrite));
+	}
+
+	protected void write(final String toWrite) {
 		try {
-			bw.write(getFormatedSentence(toWrite));
+			bw.write(toWrite);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -31,7 +35,10 @@ public abstract class BufferedFileWriter {
 
 	protected abstract String getFormatedSentence(Sentence toWrite);
 
+	protected abstract void handleEndOfFile();
+
 	public void close() {
+		handleEndOfFile();
 		try {
 			if (bw != null)
 				bw.close();

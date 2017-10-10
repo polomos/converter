@@ -9,6 +9,7 @@ import com.google.common.collect.Ordering;
 import com.polomos.io.WordUtil;
 
 public class Sentence {
+
 	private ArrayList<String> words = new ArrayList<>();
 	private int sentenceNo = 1;
 
@@ -42,7 +43,7 @@ public class Sentence {
 	 * @return
 	 */
 	public String toXml() {
-		return words.toString();
+		return "<sentence><word>" + Joiner.on("</word><word>").join(words) + "</word></sentence>\n";
 	}
 
 	/**

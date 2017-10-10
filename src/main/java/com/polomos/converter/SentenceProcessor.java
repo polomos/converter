@@ -44,8 +44,8 @@ public class SentenceProcessor {
 	private void putSentenceToFiles() {
 		sentence.sortSentence();
 		log.debug("Sorted {}", sentence);
-		csvWriter.write(sentence);
-		xmlWriter.write(sentence);
+		csvWriter.writeSentence(sentence);
+		xmlWriter.writeSentence(sentence);
 	}
 
 	/**
