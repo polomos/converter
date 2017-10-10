@@ -34,7 +34,7 @@ public class Sentence {
 	 * @return
 	 */
 	public String toCsv() {
-		return Joiner.on(",").join(words);
+		return "Sentence " + sentenceNo + ", " + Joiner.on(", ").join(words) + "\n";
 	}
 
 	/**
@@ -77,5 +77,12 @@ public class Sentence {
 
 	public void sortSentence() {
 		Collections.sort(words, Ordering.from(String.CASE_INSENSITIVE_ORDER));
+	}
+
+	/**
+	 * @return number of words in sentence
+	 */
+	public int getLenght() {
+		return words.size();
 	}
 }

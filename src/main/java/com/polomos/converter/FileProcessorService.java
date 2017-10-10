@@ -2,11 +2,10 @@ package com.polomos.converter;
 
 import static org.apache.commons.io.FilenameUtils.getBaseName;
 
-import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.LineIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,22 +32,38 @@ public final class FileProcessorService {
 	public void process() {
 
 		if (FileValidator.isValid(filePath)) {
-			final File inputFile = new File(filePath);
-			final SentenceProcessor sp = new SentenceProcessor(getBaseName(inputFile.getName()));
-			LineIterator it = null;
+			BufferedReader br = null;
+			FileReader fr = null;
+			SentenceProcessor sp = null;
+
 			try {
-				it = FileUtils.lineIterator(inputFile, "UTF-8");
-				while (it.hasNext()) {
-					String line = it.nextLine();
-					sp.processLine(line);
+				fr = new FileReader(filePath);
+				br = new BufferedReader(fr);
+
+				String currentLine;
+				sp = new SentenceProcessor(getBaseName(filePath));
+				while ((currentLine = br.readLine()) != null) {
+					sp.processLine(currentLine);
 				}
+
 			} catch (IOException e) {
-				log.error(e.getMessage());
+				e.printStackTrace();
 			} finally {
-				LineIterator.closeQuietly(it);
-				sp.close();
+				try {
+					if (sp != null) {
+						sp.close();
+					}
+					if (br != null) {
+						br.close();
+					}
+					if (fr != null) {
+						fr.close();
+					}
+
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
 			}
 		}
 	}
-
 }

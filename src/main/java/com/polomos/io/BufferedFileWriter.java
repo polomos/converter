@@ -6,13 +6,17 @@ import java.io.IOException;
 
 import com.polomos.converter.Sentence;
 
+import lombok.Getter;
+
 public abstract class BufferedFileWriter {
 
-	BufferedWriter bw = null;
-	FileWriter fw = null;
+	@Getter
+	private String filePath;
+	private BufferedWriter bw = null;
+	private FileWriter fw = null;
 
 	public BufferedFileWriter(final String filePath) {
-
+		this.filePath = filePath;
 		try {
 			fw = new FileWriter(filePath);
 		} catch (IOException e) {

@@ -19,6 +19,7 @@ public class SentenceProcessor {
 	private CsvWriter csvWriter;
 	private XmlWriter xmlWriter;
 	private Sentence sentence = new Sentence();
+	private int longestSentence = 0;
 
 	public SentenceProcessor(final String fileName) {
 		csvWriter = new CsvWriter(fileName);
@@ -46,13 +47,15 @@ public class SentenceProcessor {
 		log.debug("Sorted {}", sentence);
 		csvWriter.writeSentence(sentence);
 		xmlWriter.writeSentence(sentence);
+		longestSentence = Math.max(longestSentence, sentence.getLenght());
 	}
 
 	/**
 	 * Close all open files.
 	 */
 	public void close() {
-		csvWriter.close();
 		xmlWriter.close();
+		csvWriter.close();
+		csvWriter.replaceFile(longestSentence);
 	}
 }
