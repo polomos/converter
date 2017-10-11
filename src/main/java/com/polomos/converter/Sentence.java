@@ -1,12 +1,13 @@
 package com.polomos.converter;
 
-import static com.polomos.io.WordUtil.removeSpecialCharacters;
+import static com.polomos.converter.WordUtil.removeSpecialCharacters;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import com.google.common.collect.Ordering;
 
 public class Sentence {
@@ -57,9 +58,9 @@ public class Sentence {
 	}
 
 	/**
-	 * Removes all words from sentence
+	 * Removes all words from current sentence and increase sentence number.
 	 */
-	public void startNew() {
+	public void startNewSentence() {
 		words.clear();
 		sentenceNo++;
 	}
@@ -86,4 +87,20 @@ public class Sentence {
 	public int getLenght() {
 		return words.size();
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(sentenceNo, words);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final Sentence other = (Sentence) obj;
+		return Objects.equal(this.sentenceNo, other.sentenceNo) && Objects.equal(this.words, other.words);
+	}
+
 }

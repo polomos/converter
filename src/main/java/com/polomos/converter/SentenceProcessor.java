@@ -1,12 +1,11 @@
 package com.polomos.converter;
 
-import static com.polomos.io.WordUtil.isEndOfSentence;
+import static com.polomos.converter.WordUtil.isEndOfSentence;
+import static com.polomos.converter.WordUtil.splitLine;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.CharMatcher;
-import com.google.common.base.Splitter;
 import com.polomos.io.CsvWriter;
 import com.polomos.io.XmlWriter;
 
@@ -23,7 +22,6 @@ import lombok.Getter;
 public class SentenceProcessor {
 
 	private static final Logger log = LoggerFactory.getLogger(SentenceProcessor.class);
-	private static final Splitter SPLITTER = Splitter.on(CharMatcher.WHITESPACE).trimResults().omitEmptyStrings();
 
 	private Sentence sentence = new Sentence();
 	@Getter
@@ -36,21 +34,25 @@ public class SentenceProcessor {
 		this.xmlWriter = xmlWriter;
 	}
 
+	/**
+	 * Split line into words, sort its and store in file.
+	 * 
+	 * @param line
+	 */
 	public void processLine(final String line) {
-		final Iterable<String> splitedLine = SPLITTER.split(line);
-
-		for (String word : splitedLine) {
+		log.debug("readed line: {}", line);
+		for (String word : splitLine(line)) {
+			log.debug("processing : {}", word);
 			if (isEndOfSentence(word)) {
 				sentence.addWord(word);
 				if (sentence.isNotEmpty()) {
 					putSentenceToFiles();
-					sentence.startNew();
+					sentence.startNewSentence();
 				}
 			} else {
 				sentence.addWord(word);
 			}
 		}
-
 	}
 
 	/**
@@ -58,7 +60,7 @@ public class SentenceProcessor {
 	 */
 	private void putSentenceToFiles() {
 		sentence.sortSentence();
-		log.debug("Sorted {}", sentence);
+		log.info("Sorted {}", sentence);
 		csvWriter.writeSentence(sentence);
 		xmlWriter.writeSentence(sentence);
 		longestSentence = Math.max(longestSentence, sentence.getLenght());

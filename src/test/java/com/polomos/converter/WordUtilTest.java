@@ -1,43 +1,48 @@
 package com.polomos.converter;
 
+import static com.polomos.converter.WordUtil.isEndOfSentence;
+import static com.polomos.converter.WordUtil.removeSpecialCharacters;
+import static com.polomos.converter.WordUtil.splitLine;
 import static org.fest.assertions.Assertions.assertThat;
 
 import org.junit.Test;
-
-import com.polomos.io.WordUtil;
 
 public class WordUtilTest {
 
 	@Test
 	public void testEndOfSentence() {
-		testSpecialSymbol(".");
-		testSpecialSymbol("!");
-		testSpecialSymbol("?");
-	}
-
-	@Test
-	public void testSpecialWords() {
-		assertThat(WordUtil.isEndOfSentence("Mr.")).isFalse();
+		testEndOfSentence(".");
+		testEndOfSentence("!");
+		testEndOfSentence("?");
+		assertThat(isEndOfSentence("Mr.")).isFalse();
+		assertThat(isEndOfSentence("end.")).isTrue();
 	}
 
 	@Test
 	public void testSpecialCharacterReplace() {
-		assertThat(WordUtil.removeSpecialCharacters("asd")).isEqualTo("asd");
-		assertThat(WordUtil.removeSpecialCharacters(".asd")).isEqualTo("asd");
-		assertThat(WordUtil.removeSpecialCharacters("couldn't")).isEqualTo("couldn't");
-		assertThat(WordUtil.removeSpecialCharacters("(and")).isEqualTo("and");
-		assertThat(WordUtil.removeSpecialCharacters("finger)")).isEqualTo("finger");
-		assertThat(WordUtil.removeSpecialCharacters("asd,")).isEqualTo("asd");
-		assertThat(WordUtil.removeSpecialCharacters("asd?")).isEqualTo("asd");
-		assertThat(WordUtil.removeSpecialCharacters("asd!")).isEqualTo("asd");
-		assertThat(WordUtil.removeSpecialCharacters("asd:")).isEqualTo("asd");
+		assertThat(removeSpecialCharacters("asd")).isEqualTo("asd");
+		assertThat(removeSpecialCharacters(".asd")).isEqualTo("asd");
+		assertThat(removeSpecialCharacters("couldn't")).isEqualTo("couldn't");
+		assertThat(removeSpecialCharacters("(and")).isEqualTo("and");
+		assertThat(removeSpecialCharacters("finger)")).isEqualTo("finger");
+		assertThat(removeSpecialCharacters("asd,")).isEqualTo("asd");
+		assertThat(removeSpecialCharacters("asd?")).isEqualTo("asd");
+		assertThat(removeSpecialCharacters("asd!")).isEqualTo("asd");
+		assertThat(removeSpecialCharacters("asd:")).isEqualTo("asd");
 	}
 
-	private void testSpecialSymbol(String dot) {
-		assertThat(WordUtil.isEndOfSentence(dot)).isTrue();
-		assertThat(WordUtil.isEndOfSentence("a" + dot)).isTrue();
-		assertThat(WordUtil.isEndOfSentence("asdf" + dot)).isTrue();
-		assertThat(WordUtil.isEndOfSentence(dot + "a")).isFalse();
-		assertThat(WordUtil.isEndOfSentence(dot + "asdf")).isFalse();
+	@Test
+	public void testSpliLine() {
+		assertThat(splitLine("Ala ma kota")).containsOnly("Ala", "ma", "kota");
+		assertThat(splitLine("Ala ma kota,ok?")).containsOnly("Ala", "ma", "kota", "ok?");
+		assertThat(splitLine("Ala ma kota.")).containsOnly("Ala", "ma", "kota.");
+	}
+
+	private void testEndOfSentence(final String symbol) {
+		assertThat(isEndOfSentence(symbol)).isTrue();
+		assertThat(isEndOfSentence("a" + symbol)).isTrue();
+		assertThat(isEndOfSentence("asdf" + symbol)).isTrue();
+		assertThat(isEndOfSentence(symbol + "a")).isFalse();
+		assertThat(isEndOfSentence(symbol + "asdf")).isFalse();
 	}
 }

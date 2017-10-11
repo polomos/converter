@@ -1,7 +1,10 @@
-package com.polomos.io;
+package com.polomos.converter;
 
 import java.util.regex.Pattern;
 
+import com.google.common.base.CharMatcher;
+import com.google.common.base.Splitter;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
 /**
@@ -19,6 +22,9 @@ public final class WordUtil {
 			"al.");
 	private static final Pattern END_OF_SENTENCE = Pattern.compile(".*[.!?]$");
 	private static final Pattern SPECIAL_CHARACTER = Pattern.compile("[.!?,-/(/):]");
+	private static final Splitter SPLITTER = Splitter.on(CharMatcher.whitespace()).trimResults().omitEmptyStrings();
+	private static final Splitter SPECIAL_CHARACTER_SPLITTER = Splitter.on(CharMatcher.anyOf("[,-/(/):]")).trimResults()
+			.omitEmptyStrings();
 
 	/** Unused private constructor */
 	private WordUtil() {
@@ -47,5 +53,19 @@ public final class WordUtil {
 	 */
 	public static String removeSpecialCharacters(final String word) {
 		return periodWords.contains(word) ? word : SPECIAL_CHARACTER.matcher(word).replaceAll("");
+	}
+
+	/**
+	 * Split {@code line} into words. Do not remove end of line delimiter.
+	 * 
+	 * @param line
+	 * @return words from {@code line}
+	 */
+	public static Iterable<String> splitLine(final String line) {
+		final ImmutableList.Builder<String> words = ImmutableList.builder();
+		for (String word : SPLITTER.split(line)) {
+			words.addAll(SPECIAL_CHARACTER_SPLITTER.split(word));
+		}
+		return words.build();
 	}
 }
