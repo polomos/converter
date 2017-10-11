@@ -1,12 +1,13 @@
 package com.polomos.converter;
 
+import static com.polomos.io.WordUtil.removeSpecialCharacters;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Ordering;
-import com.polomos.io.WordUtil;
 
 public class Sentence {
 
@@ -18,10 +19,10 @@ public class Sentence {
 	 * removed. Word is added only in case it has length > 0
 	 * 
 	 * @param word
-	 * @return
+	 * @return the word, which is finaly added to sentence
 	 */
 	public String addWord(final String word) {
-		final String finalWord = WordUtil.removeSpecialCharacters(word);
+		final String finalWord = removeSpecialCharacters(word);
 		if (finalWord.length() > 0) {
 			words.add(finalWord);
 		}
