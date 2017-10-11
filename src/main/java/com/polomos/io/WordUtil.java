@@ -18,7 +18,7 @@ public final class WordUtil {
 			"B.C.", "b.c.", "a.m.", "A.M.", "p.m.", "P.M.", "A.D.", "a.d.", "B.C.E.", "C.E.", "i.e.", "etc.", "e.g.",
 			"al.");
 	private static final Pattern END_OF_SENTENCE = Pattern.compile(".*[.!?]$");
-	private static final Pattern SPECIAL_CHARACTER = Pattern.compile("[.,-/(/)]");
+	private static final Pattern SPECIAL_CHARACTER = Pattern.compile("[.!?,-/(/):]");
 
 	/** Unused private constructor */
 	private WordUtil() {

@@ -27,6 +27,10 @@ public class WordUtilTest {
 		assertThat(WordUtil.removeSpecialCharacters("couldn't")).isEqualTo("couldn't");
 		assertThat(WordUtil.removeSpecialCharacters("(and")).isEqualTo("and");
 		assertThat(WordUtil.removeSpecialCharacters("finger)")).isEqualTo("finger");
+		assertThat(WordUtil.removeSpecialCharacters("asd,")).isEqualTo("asd");
+		assertThat(WordUtil.removeSpecialCharacters("asd?")).isEqualTo("asd");
+		assertThat(WordUtil.removeSpecialCharacters("asd!")).isEqualTo("asd");
+		assertThat(WordUtil.removeSpecialCharacters("asd:")).isEqualTo("asd");
 	}
 
 	private void testSpecialSymbol(String dot) {

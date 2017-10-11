@@ -3,8 +3,9 @@ package com.polomos.converter;
 import static org.apache.commons.io.FilenameUtils.getBaseName;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,12 +39,12 @@ public final class FileProcessorService {
 			final CsvWriter csvWriter = new CsvWriter(fileBaseName);
 			final XmlWriter xmlWriter = new XmlWriter(fileBaseName);
 			BufferedReader br = null;
-			FileReader fr = null;
+			InputStreamReader in = null;
 			SentenceProcessor sp = null;
 
 			try {
-				fr = new FileReader(filePath);
-				br = new BufferedReader(fr);
+				in = new InputStreamReader(new FileInputStream(filePath), "UTF8");
+				br = new BufferedReader(in);
 
 				String currentLine;
 				sp = new SentenceProcessor(csvWriter, xmlWriter);
@@ -58,8 +59,8 @@ public final class FileProcessorService {
 					if (br != null) {
 						br.close();
 					}
-					if (fr != null) {
-						fr.close();
+					if (in != null) {
+						in.close();
 					}
 					xmlWriter.close();
 					csvWriter.close();

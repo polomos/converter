@@ -1,8 +1,9 @@
 package com.polomos.io;
 
 import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
+
+import org.apache.commons.io.output.FileWriterWithEncoding;
 
 import com.polomos.converter.Sentence;
 
@@ -13,12 +14,12 @@ public abstract class BufferedFileWriter {
 	@Getter
 	private String filePath;
 	private BufferedWriter bw = null;
-	private FileWriter fw = null;
+	private FileWriterWithEncoding fw = null;
 
 	public BufferedFileWriter(final String filePath) {
 		this.filePath = filePath;
 		try {
-			fw = new FileWriter(filePath);
+			fw = new FileWriterWithEncoding(filePath, "UTF-8");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
