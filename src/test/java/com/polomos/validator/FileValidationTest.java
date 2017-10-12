@@ -1,5 +1,6 @@
 package com.polomos.validator;
 
+import static com.polomos.validator.FileValidator.isValidPath;
 import static org.fest.assertions.Assertions.assertThat;
 
 import org.junit.Test;
@@ -12,13 +13,12 @@ import org.junit.Test;
  */
 public class FileValidationTest {
 
-	private final FileValidator underTest = new FileValidator();
 	private final String basePath = "src/test/resources/";
 
 	@Test
 	public void testFilePath() {
-		assertThat(underTest.isValid(basePath + "notExists.txt")).isFalse();
-		assertThat(underTest.isValid(basePath + "emptyDirectory")).isFalse();
-		assertThat(underTest.isValid(basePath + "emptyFile.txt")).isTrue();
+		assertThat(isValidPath(basePath + "notExists.txt")).isFalse();
+		assertThat(isValidPath(basePath + "emptyDirectory")).isFalse();
+		assertThat(isValidPath(basePath + "emptyFile.txt")).isTrue();
 	}
 }

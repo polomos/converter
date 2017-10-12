@@ -15,7 +15,7 @@ public final class FileValidator {
 
 	private static final Logger log = LoggerFactory.getLogger(FileValidator.class);
 
-	public static boolean isValid(final String filePath) {
+	public static boolean isValidPath(final String filePath) {
 		File f = new File(filePath);
 		if (!f.exists()) {
 			log.error("File {} does not extis", filePath);

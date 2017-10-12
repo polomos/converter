@@ -36,7 +36,7 @@ public class Sentence {
 	 * @return
 	 */
 	public String toCsv() {
-		return "Sentence " + sentenceNo + ", " + Joiner.on(", ").join(words) + "\n";
+		return "Sentence " + sentenceNo + ", " + Joiner.on(", ").join(words);
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class Sentence {
 	 * @return
 	 */
 	public String toXml() {
-		return "<sentence><word>" + Joiner.on("</word><word>").join(words) + "</word></sentence>\n";
+		return "<sentence><word>" + Joiner.on("</word><word>").join(words) + "</word></sentence>";
 	}
 
 	/**

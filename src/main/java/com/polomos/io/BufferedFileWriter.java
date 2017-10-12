@@ -1,5 +1,7 @@
 package com.polomos.io;
 
+import static java.lang.System.lineSeparator;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 
@@ -27,7 +29,7 @@ public abstract class BufferedFileWriter {
 	}
 
 	public void writeSentence(final Sentence toWrite) {
-		write(getFormatedSentence(toWrite));
+		write(getFormatedSentence(toWrite) + lineSeparator());
 	}
 
 	protected void write(final String toWrite) {

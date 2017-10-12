@@ -35,7 +35,7 @@ public final class FileProcessorService {
 	public void process() {
 		final String fileBaseName = getBaseName(filePath);
 
-		if (FileValidator.isValid(filePath)) {
+		if (FileValidator.isValidPath(filePath)) {
 			final CsvWriter csvWriter = new CsvWriter(fileBaseName);
 			final XmlWriter xmlWriter = new XmlWriter(fileBaseName);
 			BufferedReader br = null;

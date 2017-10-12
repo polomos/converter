@@ -127,7 +127,6 @@
 					<mainClass>com.polomos.converter.Main</mainClass>
 					<arguments>
 						<argument>${filePath}</argument>
-                        <argument>-Xmx256m</argument>
 					</arguments>
 				</configuration>
 			</plugin>

@@ -7,6 +7,12 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import org.junit.Test;
 
+/**
+ * Test class for {@link WordUtil}
+ * 
+ * @author JPOLOM
+ *
+ */
 public class WordUtilTest {
 
 	@Test
