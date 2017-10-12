@@ -2,6 +2,13 @@ package com.polomos.io;
 
 import com.polomos.converter.Sentence;
 
+/**
+ * Concrete implementation of file writer, which writes {@link Sentence} in csv
+ * format.
+ * 
+ * @author jpolom
+ *
+ */
 public class XmlWriter extends BufferedFileWriter {
 
 	public static final String XML_SUFFIX = ".xml";

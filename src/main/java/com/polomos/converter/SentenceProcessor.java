@@ -6,10 +6,7 @@ import static com.polomos.converter.WordUtil.splitLine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.polomos.io.CsvWriter;
-import com.polomos.io.XmlWriter;
-
-import lombok.Getter;
+import com.polomos.io.BufferedFileWriter;
 
 /**
  * Class process provided line. Split it into words, remove special characters.
@@ -24,18 +21,20 @@ public class SentenceProcessor {
 	private static final Logger log = LoggerFactory.getLogger(SentenceProcessor.class);
 
 	private Sentence sentence = new Sentence();
-	@Getter
-	private int longestSentence = 0;
-	private CsvWriter csvWriter;
-	private XmlWriter xmlWriter;
+	private BufferedFileWriter[] fileWriters;
 
-	public SentenceProcessor(final CsvWriter csvWriter, final XmlWriter xmlWriter) {
-		this.csvWriter = csvWriter;
-		this.xmlWriter = xmlWriter;
+	/**
+	 * Create sentence processor, which handle separate sentences.
+	 * 
+	 * @param fileWriters
+	 *            which will write sentences to file
+	 */
+	public SentenceProcessor(final BufferedFileWriter... fileWriters) {
+		this.fileWriters = fileWriters;
 	}
 
 	/**
-	 * Split line into words, sort its and store in file.
+	 * Split {@code line} into words, sort its and store in xml and csv file.
 	 * 
 	 * @param line
 	 */
@@ -56,13 +55,14 @@ public class SentenceProcessor {
 	}
 
 	/**
-	 * Put sentence to both csv and xml file
+	 * Put sentence into files
 	 */
 	private void putSentenceToFiles() {
+		// first sort sentence
 		sentence.sortSentence();
 		log.info("Sorted {}", sentence);
-		csvWriter.writeSentence(sentence);
-		xmlWriter.writeSentence(sentence);
-		longestSentence = Math.max(longestSentence, sentence.getLenght());
+		for (BufferedFileWriter fileWriter : fileWriters) {
+			fileWriter.writeSentence(sentence);
+		}
 	}
 }

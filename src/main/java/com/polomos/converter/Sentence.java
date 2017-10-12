@@ -72,11 +72,6 @@ public class Sentence {
 		return sentenceNo;
 	}
 
-	@Override
-	public String toString() {
-		return MoreObjects.toStringHelper(this).add("sentenceNo", sentenceNo).add("words", words).toString();
-	}
-
 	public void sortSentence() {
 		Collections.sort(words, Ordering.from(String.CASE_INSENSITIVE_ORDER));
 	}
@@ -86,6 +81,11 @@ public class Sentence {
 	 */
 	public int getLenght() {
 		return words.size();
+	}
+
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this).add("sentenceNo", sentenceNo).add("words", words).toString();
 	}
 
 	@Override

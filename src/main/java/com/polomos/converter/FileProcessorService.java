@@ -30,6 +30,7 @@ public final class FileProcessorService {
 	public void process(final String filePath) {
 		final String fileBaseName = getBaseName(filePath);
 
+		// validate if provided path is correct
 		if (FileValidator.isValidPath(filePath)) {
 			final CsvWriter csvWriter = new CsvWriter(fileBaseName);
 			final XmlWriter xmlWriter = new XmlWriter(fileBaseName);
@@ -58,7 +59,6 @@ public final class FileProcessorService {
 					}
 					xmlWriter.close();
 					csvWriter.close();
-					csvWriter.replaceFile(sp.getLongestSentence());
 				} catch (IOException ex) {
 					ex.printStackTrace();
 				}

@@ -15,6 +15,12 @@ public final class FileValidator {
 
 	private static final Logger log = LoggerFactory.getLogger(FileValidator.class);
 
+	/**
+	 * Check if {@code filePath} is correct.
+	 * 
+	 * @param filePath
+	 * @return {@code true} in case file is correct, {@code false} otherwise
+	 */
 	public static boolean isValidPath(final String filePath) {
 		File f = new File(filePath);
 		if (!f.exists()) {

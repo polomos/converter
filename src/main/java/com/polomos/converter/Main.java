@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Main class, which start whole processing
+ * Main class, which starts whole processing
  * 
  * @author JPOLOM
  *

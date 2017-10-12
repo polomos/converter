@@ -3,6 +3,7 @@ package com.polomos.converter;
 import static com.polomos.io.CsvWriter.CSV_SUFFIX;
 import static com.polomos.io.XmlWriter.XML_SUFFIX;
 import static java.nio.file.Files.deleteIfExists;
+import static org.apache.commons.io.FileUtils.readLines;
 import static org.apache.commons.io.FilenameUtils.getBaseName;
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -10,7 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
@@ -49,7 +49,7 @@ public final class FileProcessorServiceTest {
 	}
 
 	/**
-	 * Process file, which contains one line
+	 * Process file, which contains one line and check final content
 	 */
 	@Test
 	public void testProcessingFile1() {
@@ -69,7 +69,6 @@ public final class FileProcessorServiceTest {
 		assertThat(xmlLines.get(3)).isEqualTo("</text>");
 
 		assertThat(deleteFile(baseFileName)).isTrue();
-
 	}
 
 	private boolean deleteFile(final String fileName) {
@@ -86,7 +85,7 @@ public final class FileProcessorServiceTest {
 		List<String> lines = Lists.newArrayList();
 		final File file = new File(filePath);
 		try {
-			lines = FileUtils.readLines(file, "UTF-8");
+			lines = readLines(file, "UTF-8");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

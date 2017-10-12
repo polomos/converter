@@ -8,16 +8,19 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.polomos.converter.Sentence;
 
+/**
+ * Concrete implementation of file writer, which writes {@link Sentence} in xml
+ * format.
+ * 
+ * @author jpolom
+ *
+ */
 public class CsvWriter extends BufferedFileWriter {
 
 	public static final String CSV_SUFFIX = ".csv";
-
-	private static final Logger log = LoggerFactory.getLogger(CsvWriter.class);
 	private static final String CSV_TMP_NAME = "temp.csv";
 
 	public CsvWriter(final String filePath) {
@@ -31,9 +34,19 @@ public class CsvWriter extends BufferedFileWriter {
 
 	@Override
 	protected void handleEndOfFile() {
+		closeWriter();
+		replaceFileHeader(getLongestSentence());
 	}
 
-	public void replaceFile(final int longestSentence) {
+	/**
+	 * Because on the beginning it is not clear how many columns will be in the
+	 * longest sentence, it is calculated on the fly. At the end of processing
+	 * length of longest sentence is know and header can be created.
+	 * 
+	 * @param numberOfColumns
+	 *            number of columns
+	 */
+	private void replaceFileHeader(final int numberOfColumns) {
 		renameCurrentFile();
 		File f1 = new File(CSV_TMP_NAME);
 		File f2 = new File(getFilePath());
@@ -43,7 +56,7 @@ public class CsvWriter extends BufferedFileWriter {
 		try {
 			in = new FileInputStream(f1);
 			out = new FileOutputStream(f2);
-			out.write(getHeader(longestSentence));
+			out.write(getHeader(numberOfColumns));
 
 			IOUtils.copy(in, out);
 		} catch (IOException e) {
@@ -65,6 +78,9 @@ public class CsvWriter extends BufferedFileWriter {
 		tmpFile.deleteOnExit();
 	}
 
+	/**
+	 * Create header line
+	 */
 	private byte[] getHeader(int longestSentence) {
 		final StringBuilder sb = new StringBuilder("");
 		for (int i = 1; i <= longestSentence; i++) {
