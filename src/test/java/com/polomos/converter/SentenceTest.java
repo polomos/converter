@@ -69,6 +69,15 @@ public final class SentenceTest {
 		assertThat(s.toXml()).isEqualTo("<sentence><word>ala</word><word>ma</word><word>kota</word></sentence>");
 	}
 
+	@Test
+	public void testIsNotEmpty() {
+		final Sentence s = createSentence();
+		assertThat(s.isNotEmpty()).isTrue();
+		s.startNewSentence();
+		assertThat(s.isNotEmpty()).isFalse();
+
+	}
+
 	private Sentence createSentence() {
 		final Sentence s1 = new Sentence();
 		s1.addWord("ala");
@@ -76,4 +85,5 @@ public final class SentenceTest {
 		s1.addWord("kota");
 		return s1;
 	}
+
 }
