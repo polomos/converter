@@ -7,9 +7,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.polomos.io.CsvWriter;
 import com.polomos.io.XmlWriter;
 import com.polomos.validator.FileValidator;
@@ -22,17 +19,15 @@ import com.polomos.validator.FileValidator;
  *
  */
 public final class FileProcessorService {
-	private static final Logger log = LoggerFactory.getLogger(FileProcessorService.class);
-	private String filePath;
 
-	public FileProcessorService(String filePath) {
-		this.filePath = filePath;
+	public FileProcessorService() {
 	}
 
 	/**
-	 * Process provided file
+	 * Process provided file. Reads all lines. When end of sentence is detected,
+	 * it is converted into xml and csv and pushed to file.
 	 */
-	public void process() {
+	public void process(final String filePath) {
 		final String fileBaseName = getBaseName(filePath);
 
 		if (FileValidator.isValidPath(filePath)) {
@@ -51,7 +46,6 @@ public final class FileProcessorService {
 				while ((currentLine = br.readLine()) != null) {
 					sp.processLine(currentLine);
 				}
-
 			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {
@@ -65,7 +59,6 @@ public final class FileProcessorService {
 					xmlWriter.close();
 					csvWriter.close();
 					csvWriter.replaceFile(sp.getLongestSentence());
-
 				} catch (IOException ex) {
 					ex.printStackTrace();
 				}

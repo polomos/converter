@@ -18,7 +18,7 @@ public class Main {
 	public static void main(String[] args) {
 		log.debug("Start application");
 		if (args.length > 0) {
-			new FileProcessorService(args[0]).process();
+			new FileProcessorService().process(args[0]);
 		} else {
 			log.error("Please provided input file as argument");
 		}
