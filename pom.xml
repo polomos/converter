@@ -9,26 +9,12 @@
 
 	<repositories>
 		<repository>
-			<id>spring-repo</id>
-			<name>Spring Repository</name>
-			<url>http://repo.spring.io/release</url>
-		</repository>
-		<repository>
 			<id>mvn repo</id>
 			<name>maven repo</name>
 			<url>https://mvnrepository.com/</url>
 		</repository>
 	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>spring-repo</id>
-			<name>Spring Repository</name>
-			<url>http://repo.spring.io/release</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</pluginRepository>
-	</pluginRepositories>
+	
 
 	<properties>
 		<filePath>small.in</filePath>
@@ -92,6 +78,25 @@
 		<finalName>converter</finalName>
 
 		<plugins>
+        <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-dependency-plugin</artifactId>
+    <executions>
+        <execution>
+            <id>copy-dependencies</id>
+            <phase>prepare-package</phase>
+            <goals>
+                <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+                <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                <overWriteReleases>false</overWriteReleases>
+                <overWriteSnapshots>false</overWriteSnapshots>
+                <overWriteIfNewer>true</overWriteIfNewer>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
@@ -107,6 +112,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
 							<mainClass>com.polomos.converter.Main</mainClass>
 						</manifest>
 					</archive>
@@ -121,6 +127,7 @@
 					<mainClass>com.polomos.converter.Main</mainClass>
 					<arguments>
 						<argument>${filePath}</argument>
+                        <argument>-Xmx256m</argument>
 					</arguments>
 				</configuration>
 			</plugin>
