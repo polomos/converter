@@ -6,7 +6,7 @@ import static com.polomos.converter.WordUtil.splitLine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.polomos.io.BufferedFileWriter;
+import com.polomos.io.SentenceWriter;
 
 /**
  * Class process provided line. Split it into words, remove special characters.
@@ -21,7 +21,7 @@ public class SentenceProcessor {
 	private static final Logger log = LoggerFactory.getLogger(SentenceProcessor.class);
 
 	private Sentence sentence = new Sentence();
-	private BufferedFileWriter[] fileWriters;
+	private SentenceWriter[] fileWriters;
 
 	/**
 	 * Create sentence processor, which handle separate sentences.
@@ -29,7 +29,7 @@ public class SentenceProcessor {
 	 * @param fileWriters
 	 *            which will write sentences to file
 	 */
-	public SentenceProcessor(final BufferedFileWriter... fileWriters) {
+	public SentenceProcessor(final SentenceWriter... fileWriters) {
 		this.fileWriters = fileWriters;
 	}
 
@@ -60,7 +60,7 @@ public class SentenceProcessor {
 		if (sentence.isNotEmpty()) {
 			sentence.sortSentence();
 			log.info("Sorted {}", sentence);
-			for (BufferedFileWriter fileWriter : fileWriters) {
+			for (SentenceWriter fileWriter : fileWriters) {
 				fileWriter.writeSentence(sentence);
 			}
 			sentence.startNewSentence();

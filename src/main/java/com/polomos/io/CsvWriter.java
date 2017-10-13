@@ -24,7 +24,7 @@ import com.polomos.converter.Sentence;
  * @author jpolom
  *
  */
-public class CsvWriter extends BufferedFileWriter {
+public class CsvWriter extends SentenceWriter {
 
 	private static final Logger log = LoggerFactory.getLogger(CsvWriter.class);
 	public static final String CSV_SUFFIX = ".csv";

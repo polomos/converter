@@ -22,9 +22,9 @@ import lombok.Getter;
  * @author jpolom
  *
  */
-public abstract class BufferedFileWriter {
+public abstract class SentenceWriter {
 
-	private static final Logger log = LoggerFactory.getLogger(BufferedFileWriter.class);
+	private static final Logger log = LoggerFactory.getLogger(SentenceWriter.class);
 
 	@Getter
 	private String filePath;
@@ -32,7 +32,7 @@ public abstract class BufferedFileWriter {
 	private int longestSentence = 0;
 	private BufferedWriter bw = null;
 
-	public BufferedFileWriter(final String filePath) {
+	public SentenceWriter(final String filePath) {
 		this.filePath = filePath;
 
 		try {

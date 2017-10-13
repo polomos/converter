@@ -9,7 +9,7 @@ import com.polomos.converter.Sentence;
  * @author jpolom
  *
  */
-public class XmlWriter extends BufferedFileWriter {
+public class XmlWriter extends SentenceWriter {
 
 	public static final String XML_SUFFIX = ".xml";
 
