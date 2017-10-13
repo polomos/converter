@@ -1,13 +1,19 @@
 package com.polomos.io;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import static java.nio.file.Files.delete;
+import static java.nio.file.Files.move;
+import static java.nio.file.Files.newBufferedReader;
+import static java.nio.file.Files.newBufferedWriter;
+import static java.nio.file.Paths.get;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.nio.file.Paths;
 
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.polomos.converter.Sentence;
 
@@ -20,6 +26,7 @@ import com.polomos.converter.Sentence;
  */
 public class CsvWriter extends BufferedFileWriter {
 
+	private static final Logger log = LoggerFactory.getLogger(CsvWriter.class);
 	public static final String CSV_SUFFIX = ".csv";
 	private static final String CSV_TMP_NAME = "temp.csv";
 
@@ -48,45 +55,49 @@ public class CsvWriter extends BufferedFileWriter {
 	 */
 	private void replaceFileHeader(final int numberOfColumns) {
 		renameCurrentFile();
-		File f1 = new File(CSV_TMP_NAME);
-		File f2 = new File(getFilePath());
 
-		InputStream in = null;
-		OutputStream out = null;
+		BufferedReader in = null;
+		BufferedWriter out = null;
 		try {
-			in = new FileInputStream(f1);
-			out = new FileOutputStream(f2);
+			in = newBufferedReader(Paths.get(CSV_TMP_NAME));
+			out = newBufferedWriter(get(getFilePath()));
 			out.write(getHeader(numberOfColumns));
-
 			IOUtils.copy(in, out);
+			delete(Paths.get(CSV_TMP_NAME));
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 		} finally {
-			IOUtils.closeQuietly(in);
-			IOUtils.closeQuietly(out);
+			try {
+				if (in != null) {
+					in.close();
+				}
+				if (out != null) {
+					out.close();
+				}
+			} catch (IOException ex) {
+				log.error(ex.getMessage());
+			}
 		}
 
 	}
 
 	private void renameCurrentFile() {
-		// File (or directory) with old name
-		File file = new File(getFilePath());
-		// File (or directory) with new name
-		File tmpFile = new File(CSV_TMP_NAME);
-		// Rename file (or directory)
-		file.renameTo(tmpFile);
-		tmpFile.deleteOnExit();
+		try {
+			move(Paths.get(getFilePath()), Paths.get(CSV_TMP_NAME));
+		} catch (IOException e) {
+			log.error(e.getMessage());
+		}
 	}
 
 	/**
 	 * Create header line
 	 */
-	private byte[] getHeader(int longestSentence) {
+	private String getHeader(int longestSentence) {
 		final StringBuilder sb = new StringBuilder("");
 		for (int i = 1; i <= longestSentence; i++) {
 			sb.append(", Word ").append(i);
 		}
 		sb.append("\n");
-		return sb.toString().getBytes();
+		return sb.toString();
 	}
 }

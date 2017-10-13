@@ -51,10 +51,10 @@ public final class SentenceTest {
 	@Test
 	public void testSort() {
 		final Sentence s = createSentence();
-		assertThat(s.toString()).isEqualTo("Sentence{sentenceNo=1, words=[ala, ma, kota]}");
+		assertThat(s.toString()).isEqualTo("Sentence(words=[ala, ma, kota], sentenceNo=1)");
 
 		s.sortSentence();
-		assertThat(s.toString()).isEqualTo("Sentence{sentenceNo=1, words=[ala, kota, ma]}");
+		assertThat(s.toString()).isEqualTo("Sentence(words=[ala, kota, ma], sentenceNo=1)");
 	}
 
 	/**
@@ -67,10 +67,10 @@ public final class SentenceTest {
 		s.addWord("AA");
 		s.addWord("aA");
 		s.addWord("Aa");
-		assertThat(s.toString()).isEqualTo("Sentence{sentenceNo=1, words=[aa, AA, aA, Aa]}");
+		assertThat(s.toString()).isEqualTo("Sentence(words=[aa, AA, aA, Aa], sentenceNo=1)");
 
 		s.sortSentence();
-		assertThat(s.toString()).isEqualTo("Sentence{sentenceNo=1, words=[aa, aA, Aa, AA]}");
+		assertThat(s.toString()).isEqualTo("Sentence(words=[aa, aA, Aa, AA], sentenceNo=1)");
 	}
 
 	@Test

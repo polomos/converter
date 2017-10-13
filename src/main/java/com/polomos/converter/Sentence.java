@@ -7,11 +7,14 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import com.google.common.base.Joiner;
-import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+@EqualsAndHashCode
+@ToString
 public class Sentence {
 
 	private static Comparator<String> stringAlphabeticalComparator = new Comparator<String>() {
@@ -92,25 +95,4 @@ public class Sentence {
 	public int getLenght() {
 		return words.size();
 	}
-
-	@Override
-	public String toString() {
-		return MoreObjects.toStringHelper(this).add("sentenceNo", sentenceNo).add("words", words).toString();
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(sentenceNo, words);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final Sentence other = (Sentence) obj;
-		return Objects.equal(this.sentenceNo, other.sentenceNo) && Objects.equal(this.words, other.words);
-	}
-
 }

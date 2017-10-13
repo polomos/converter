@@ -1,6 +1,10 @@
 package com.polomos.validator;
 
-import java.io.File;
+import static java.nio.file.Files.exists;
+import static java.nio.file.Files.isDirectory;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +17,9 @@ import org.slf4j.LoggerFactory;
  */
 public final class FileValidator {
 
+	private FileValidator() {
+	};
+
 	private static final Logger log = LoggerFactory.getLogger(FileValidator.class);
 
 	/**
@@ -22,10 +29,11 @@ public final class FileValidator {
 	 * @return {@code true} in case file is correct, {@code false} otherwise
 	 */
 	public static boolean isValidPath(final String filePath) {
-		File f = new File(filePath);
-		if (!f.exists()) {
+		final Path path = Paths.get(filePath);
+
+		if (!exists(path)) {
 			log.error("File {} does not extis", filePath);
-		} else if (f.isDirectory()) {
+		} else if (isDirectory(path)) {
 			log.error("Path {} is a directory", filePath);
 		} else {
 			return true;

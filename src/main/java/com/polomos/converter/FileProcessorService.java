@@ -3,9 +3,13 @@ package com.polomos.converter;
 import static org.apache.commons.io.FilenameUtils.getBaseName;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.polomos.io.CsvWriter;
 import com.polomos.io.XmlWriter;
@@ -19,6 +23,8 @@ import com.polomos.validator.FileValidator;
  *
  */
 public final class FileProcessorService {
+
+	private static final Logger log = LoggerFactory.getLogger(FileProcessorService.class);
 
 	public FileProcessorService() {
 	}
@@ -35,13 +41,10 @@ public final class FileProcessorService {
 			final CsvWriter csvWriter = new CsvWriter(fileBaseName);
 			final XmlWriter xmlWriter = new XmlWriter(fileBaseName);
 			BufferedReader br = null;
-			InputStreamReader in = null;
 			SentenceProcessor sp = null;
 
 			try {
-				in = new InputStreamReader(new FileInputStream(filePath), "UTF8");
-				br = new BufferedReader(in);
-
+				br = Files.newBufferedReader(Paths.get(filePath), Charset.forName("UTF-8"));
 				String currentLine;
 				sp = new SentenceProcessor(csvWriter, xmlWriter);
 				while ((currentLine = br.readLine()) != null) {
@@ -51,19 +54,16 @@ public final class FileProcessorService {
 				// of file
 				sp.putCurrentSentenceToFiles();
 			} catch (IOException e) {
-				e.printStackTrace();
+				log.error(e.getMessage());
 			} finally {
 				try {
 					if (br != null) {
 						br.close();
 					}
-					if (in != null) {
-						in.close();
-					}
 					xmlWriter.close();
 					csvWriter.close();
 				} catch (IOException ex) {
-					ex.printStackTrace();
+					log.error(ex.getMessage());
 				}
 			}
 		}

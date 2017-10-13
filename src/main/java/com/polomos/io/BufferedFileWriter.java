@@ -1,11 +1,14 @@
 package com.polomos.io;
 
 import static java.lang.System.lineSeparator;
+import static java.nio.file.Files.newBufferedWriter;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.nio.file.Paths;
 
-import org.apache.commons.io.output.FileWriterWithEncoding;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.polomos.converter.Sentence;
 
@@ -21,21 +24,22 @@ import lombok.Getter;
  */
 public abstract class BufferedFileWriter {
 
+	private static final Logger log = LoggerFactory.getLogger(BufferedFileWriter.class);
+
 	@Getter
 	private String filePath;
 	@Getter(value = AccessLevel.PROTECTED)
 	private int longestSentence = 0;
 	private BufferedWriter bw = null;
-	private FileWriterWithEncoding fw = null;
 
 	public BufferedFileWriter(final String filePath) {
 		this.filePath = filePath;
+
 		try {
-			fw = new FileWriterWithEncoding(filePath, "UTF-8");
+			bw = newBufferedWriter(Paths.get(filePath));
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
-		bw = new BufferedWriter(fw);
 	}
 
 	/**
@@ -58,7 +62,7 @@ public abstract class BufferedFileWriter {
 		try {
 			bw.write(toWrite);
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 	}
 
@@ -75,14 +79,12 @@ public abstract class BufferedFileWriter {
 	 */
 	protected void closeWriter() {
 		try {
-			if (bw != null)
+			if (bw != null) {
 				bw.close();
-
-			if (fw != null)
-				fw.close();
+			}
 
 		} catch (IOException ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 		}
 	}
 

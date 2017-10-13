@@ -3,12 +3,12 @@ package com.polomos.converter;
 import static com.polomos.io.CsvWriter.CSV_SUFFIX;
 import static com.polomos.io.XmlWriter.XML_SUFFIX;
 import static java.nio.file.Files.deleteIfExists;
-import static org.apache.commons.io.FileUtils.readLines;
 import static org.apache.commons.io.FilenameUtils.getBaseName;
 import static org.fest.assertions.Assertions.assertThat;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.junit.Test;
@@ -91,8 +91,7 @@ public final class FileProcessorServiceTest {
 
 	private boolean deleteFile(final String fileName) {
 		try {
-			return deleteIfExists(new File(fileName + CSV_SUFFIX).toPath())
-					&& deleteIfExists(new File(fileName + XML_SUFFIX).toPath());
+			return deleteIfExists(Paths.get(fileName + CSV_SUFFIX)) && deleteIfExists(Paths.get(fileName + XML_SUFFIX));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -101,9 +100,9 @@ public final class FileProcessorServiceTest {
 
 	private List<String> readFile(final String filePath) {
 		List<String> lines = Lists.newArrayList();
-		final File file = new File(filePath);
+
 		try {
-			lines = readLines(file, "UTF-8");
+			lines = Files.readAllLines(Paths.get(filePath));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
