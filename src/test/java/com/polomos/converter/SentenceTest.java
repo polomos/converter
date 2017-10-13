@@ -57,6 +57,22 @@ public final class SentenceTest {
 		assertThat(s.toString()).isEqualTo("Sentence{sentenceNo=1, words=[ala, kota, ma]}");
 	}
 
+	/**
+	 * Test how the same words are sorted
+	 */
+	@Test
+	public void testSort1() {
+		final Sentence s = new Sentence();
+		s.addWord("aa");
+		s.addWord("AA");
+		s.addWord("aA");
+		s.addWord("Aa");
+		assertThat(s.toString()).isEqualTo("Sentence{sentenceNo=1, words=[aa, AA, aA, Aa]}");
+
+		s.sortSentence();
+		assertThat(s.toString()).isEqualTo("Sentence{sentenceNo=1, words=[aa, aA, Aa, AA]}");
+	}
+
 	@Test
 	public void testToCsv() {
 		final Sentence s = createSentence();

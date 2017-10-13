@@ -4,13 +4,23 @@ import static com.polomos.converter.WordUtil.removeSpecialCharacters;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
 
 public class Sentence {
+
+	private static Comparator<String> stringAlphabeticalComparator = new Comparator<String>() {
+		@Override
+		public int compare(String str1, String str2) {
+			return ComparisonChain.start().compare(str1, str2, String.CASE_INSENSITIVE_ORDER).compare(str2, str1)
+					.result();
+		}
+	};
 
 	private ArrayList<String> words = new ArrayList<>();
 	private int sentenceNo = 1;
@@ -73,7 +83,7 @@ public class Sentence {
 	}
 
 	public void sortSentence() {
-		Collections.sort(words, Ordering.from(String.CASE_INSENSITIVE_ORDER));
+		Collections.sort(words, Ordering.from(stringAlphabeticalComparator));
 	}
 
 	/**

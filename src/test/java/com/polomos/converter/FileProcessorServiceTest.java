@@ -25,6 +25,7 @@ public final class FileProcessorServiceTest {
 
 	private static final String NOT_EXISTING_FILE = "file.txt";
 	private static final String ONE_LINE_FILE = "one_line_file.txt";
+	private static final String ONE_LINE_FILE_WITHOUT_END_OF_SENTENCE = "one_line_without_end_of_sentence_mark.txt";
 	private static final String EMPTY_FILE = "emptyFile.txt";
 	private final String basePath = "src/test/resources/";
 	private final FileProcessorService fps = new FileProcessorService();
@@ -67,6 +68,23 @@ public final class FileProcessorServiceTest {
 		assertThat(xmlLines.get(1)).isEqualTo("<text>");
 		assertThat(xmlLines.get(2)).isEqualTo("<sentence><word>Ala</word><word>kota</word><word>ma</word></sentence>");
 		assertThat(xmlLines.get(3)).isEqualTo("</text>");
+
+		assertThat(deleteFile(baseFileName)).isTrue();
+	}
+
+	/**
+	 * Test, that the last sentence will be converted even if there is no end of
+	 * sentence mark
+	 */
+	@Test
+	public void testProcessingFile2() {
+		fps.process(basePath + ONE_LINE_FILE_WITHOUT_END_OF_SENTENCE);
+		final String baseFileName = getBaseName(ONE_LINE_FILE_WITHOUT_END_OF_SENTENCE);
+
+		final List<String> csvLines = readFile(baseFileName + CSV_SUFFIX);
+		assertThat(csvLines).hasSize(2);
+		assertThat(csvLines.get(0)).isEqualTo(", Word 1, Word 2, Word 3");
+		assertThat(csvLines.get(1)).isEqualTo("Sentence 1, Ala, kota, ma");
 
 		assertThat(deleteFile(baseFileName)).isTrue();
 	}

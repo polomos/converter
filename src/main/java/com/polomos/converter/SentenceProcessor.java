@@ -44,10 +44,7 @@ public class SentenceProcessor {
 			log.debug("processing : {}", word);
 			if (isEndOfSentence(word)) {
 				sentence.addWord(word);
-				if (sentence.isNotEmpty()) {
-					putSentenceToFiles();
-					sentence.startNewSentence();
-				}
+				putCurrentSentenceToFiles();
 			} else {
 				sentence.addWord(word);
 			}
@@ -55,14 +52,18 @@ public class SentenceProcessor {
 	}
 
 	/**
-	 * Put sentence into files
+	 * Put sentence into files in case there are any words in it. Clear sentence
+	 * and increase sentence no
 	 */
-	private void putSentenceToFiles() {
+	public void putCurrentSentenceToFiles() {
 		// first sort sentence
-		sentence.sortSentence();
-		log.info("Sorted {}", sentence);
-		for (BufferedFileWriter fileWriter : fileWriters) {
-			fileWriter.writeSentence(sentence);
+		if (sentence.isNotEmpty()) {
+			sentence.sortSentence();
+			log.info("Sorted {}", sentence);
+			for (BufferedFileWriter fileWriter : fileWriters) {
+				fileWriter.writeSentence(sentence);
+			}
+			sentence.startNewSentence();
 		}
 	}
 }

@@ -47,6 +47,9 @@ public final class FileProcessorService {
 				while ((currentLine = br.readLine()) != null) {
 					sp.processLine(currentLine);
 				}
+				// must be call in case there is no end of line mark at the end
+				// of file
+				sp.putCurrentSentenceToFiles();
 			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {
